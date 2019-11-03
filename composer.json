@@ -2,11 +2,8 @@
   "name": "matecat/queue-element",
   "description": "Queue element objects.",
   "keywords": [
-    "Asynchronous",
-    "Task Runner",
-    "ActiveMQ",
-    "RabbitMQ",
-    "Stomp"
+    "Queue",
+    "Task Runner"
   ],
   "homepage": "https://github.com/MateCat/queue-element",
   "type": "library",
