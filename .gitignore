@@ -1,0 +1,10 @@
+# IDE stuffs
+.settings
+.directory
+.idea
+.project
+.DS_Store
+
+# composer files
+composer.phar
+vendor
