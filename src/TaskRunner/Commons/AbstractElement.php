@@ -27,17 +27,20 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
      *
      * @param array $array_params
      */
-    public function __construct( Array $array_params = array() ) {
+    public function __construct( Array $array_params = [] ) {
         if ( $array_params != null ) {
-            foreach ( $array_params as $property => $value ) {
-                if( is_array( $value ) ){
-                    $value = new Params( $value );
-                }
-                if( is_int( $property ) ){
-                    $this->$property = [];
-                    $this->$property[] = $value;
+            foreach ( $array_params as $property => $raw_value ) {
+                if ( is_array( $raw_value ) ) {
+                    if ( is_int( key( $raw_value ) ) ) { //check for array list as numeric keys
+                        $this->$property = [];
+                        foreach ( $raw_value as $pos => $_element ) {
+                            $this->$property[ $pos ] = new Params( $_element );
+                        }
+                    } else {
+                        $this->$property = new Params( $raw_value );
+                    }
                 } else {
-                    $this->$property = $value;
+                    $this->$property = $raw_value;
                 }
             }
         }
@@ -57,7 +60,7 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
      * Object to Array conversion method
      * @return array
      */
-    public function toArray(){
+    public function toArray() {
         return (array)$this;
     }
 
@@ -80,7 +83,10 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
      * @return null
      */
     public function offsetGet( $offset ) {
-        if( $this->offsetExists( $offset ) ) return $this->$offset;
+        if ( $this->offsetExists( $offset ) ) {
+            return $this->$offset;
+        }
+
         return null;
     }
 
@@ -91,7 +97,9 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
      * @param mixed $value
      */
     public function offsetSet( $offset, $value ) {
-        if( $this->offsetExists( $offset ) ) $this->$offset = $value;
+        if ( $this->offsetExists( $offset ) ) {
+            $this->$offset = $value;
+        }
     }
 
     /**
@@ -100,7 +108,9 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
      * @param mixed $offset
      */
     public function offsetUnset( $offset ) {
-        if( $this->offsetExists( $offset ) ) $this->$offset = null;
+        if ( $this->offsetExists( $offset ) ) {
+            $this->$offset = null;
+        }
     }
 
 }
