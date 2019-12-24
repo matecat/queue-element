@@ -33,7 +33,12 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
                 if( is_array( $value ) ){
                     $value = new Params( $value );
                 }
-                $this->$property = $value;
+                if( is_int( $property ) ){
+                    $this->$property = [];
+                    $this->$property[] = $value;
+                } else {
+                    $this->$property = $value;
+                }
             }
         }
     }
