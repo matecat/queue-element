@@ -18,6 +18,7 @@ use \stdClass;
  *
  * Generic class for an element queue
  *
+ * @property Params $property
  * @package TaskRunner\Commons
  */
 abstract class AbstractElement extends stdClass implements ArrayAccess {
@@ -34,7 +35,11 @@ abstract class AbstractElement extends stdClass implements ArrayAccess {
                     if ( is_int( key( $raw_value ) ) ) { //check for array list as numeric keys
                         $this->$property = [];
                         foreach ( $raw_value as $pos => $_element ) {
-                            $this->$property[ $pos ] = new Params( $_element );
+                            if( is_array( $_element ) ){
+                                $this->$property[ $pos ] = new Params( $_element );
+                            } else {
+                                $this->$property[ $pos ] = $_element;
+                            }
                         }
                     } else {
                         $this->$property = new Params( $raw_value );
